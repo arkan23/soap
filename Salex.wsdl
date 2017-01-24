@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+		xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/"
+		xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
+		xmlns:tns="Salex"
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns:xsd1="Salex"
+		name="Salex"
+		targetNamespace="Salex">
+	<types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+				xmlns:xs1="Salex"
+				targetNamespace="Salex"
+				attributeFormDefault="unqualified"
+				elementFormDefault="qualified">
+			<xs:complexType name="ManufacturingOrderRow">
+				<xs:sequence>
+					<xs:element name="StartDate"
+							type="xs:dateTime"/>
+					<xs:element name="WorkCenterCode"
+							type="xs:string"/>
+					<xs:element name="GTIN"
+							type="xs:string"/>
+					<xs:element name="Quantity"
+							type="xs:integer"/>
+					<xs:element name="UnitOKEICode"
+							type="xs:string"/>
+					<xs:element name="BestBeforeDate"
+							type="xs:date"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ManufacturingOrders">
+				<xs:sequence>
+					<xs:element name="Rows"
+							type="tns:ManufacturingOrderRow"
+							minOccurs="0"
+							maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ProductList">
+				<xs:sequence>
+					<xs:element name="Rows"
+							type="tns:ProductRow"
+							minOccurs="0"
+							maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ProductRow">
+				<xs:sequence>
+					<xs:element name="Name"
+							type="xs:string"/>
+					<xs:element name="GTIN"
+							type="xs:string"/>
+					<xs:element name="StorageLife"
+							type="xs:integer"/>
+					<xs:element name="UnitName"
+							type="xs:string"/>
+					<xs:element name="UnitOKEICode"
+							type="xs:string"/>
+					<xs:element name="UnitCoef"
+							type="xs:integer"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="TestConnection">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TestConnectionResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="xs:boolean"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetArticles">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetArticlesResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="tns:ProductList"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetManufacturingOrders">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetManufacturingOrdersResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="tns:ManufacturingOrders"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SetSerializationResult">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="GTIN"
+								type="xs:string"/>
+						<xs:element name="Total"
+								type="xs:integer"/>
+						<xs:element name="Rejected"
+								type="xs:integer"/>
+						<xs:element name="Data"
+								type="xs:dateTime"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SetSerializationResultResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="xs:boolean"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</types>
+	<message name="TestConnectionRequestMessage">
+		<part name="parameters"
+				element="tns:TestConnection"/>
+	</message>
+	<message name="TestConnectionResponseMessage">
+		<part name="parameters"
+				element="tns:TestConnectionResponse"/>
+	</message>
+	<message name="GetArticlesRequestMessage">
+		<part name="parameters"
+				element="tns:GetArticles"/>
+	</message>
+	<message name="GetArticlesResponseMessage">
+		<part name="parameters"
+				element="tns:GetArticlesResponse"/>
+	</message>
+	<message name="GetManufacturingOrdersRequestMessage">
+		<part name="parameters"
+				element="tns:GetManufacturingOrders"/>
+	</message>
+	<message name="GetManufacturingOrdersResponseMessage">
+		<part name="parameters"
+				element="tns:GetManufacturingOrdersResponse"/>
+	</message>
+	<message name="SetSerializationResultRequestMessage">
+		<part name="parameters"
+				element="tns:SetSerializationResult"/>
+	</message>
+	<message name="SetSerializationResultResponseMessage">
+		<part name="parameters"
+				element="tns:SetSerializationResultResponse"/>
+	</message>
+	<portType name="SalexPortType">
+		<operation name="TestConnection">
+			<input message="tns:TestConnectionRequestMessage"/>
+			<output message="tns:TestConnectionResponseMessage"/>
+		</operation>
+		<operation name="GetArticles">
+			<input message="tns:GetArticlesRequestMessage"/>
+			<output message="tns:GetArticlesResponseMessage"/>
+		</operation>
+		<operation name="GetManufacturingOrders">
+			<input message="tns:GetManufacturingOrdersRequestMessage"/>
+			<output message="tns:GetManufacturingOrdersResponseMessage"/>
+		</operation>
+		<operation name="SetSerializationResult">
+			<input message="tns:SetSerializationResultRequestMessage"/>
+			<output message="tns:SetSerializationResultResponseMessage"/>
+		</operation>
+	</portType>
+	<binding name="SalexSoapBinding"
+			type="tns:SalexPortType">
+		<soapbind:binding style="document"
+				transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="TestConnection">
+			<soapbind:operation style="document"
+					soapAction="Salex#Salex:TestConnection"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="GetArticles">
+			<soapbind:operation style="document"
+					soapAction="Salex#Salex:GetArticles"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="GetManufacturingOrders">
+			<soapbind:operation style="document"
+					soapAction="Salex#Salex:GetManufacturingOrders"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="SetSerializationResult">
+			<soapbind:operation style="document"
+					soapAction="Salex#Salex:SetSerializationResult"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<binding name="SalexSoap12Binding"
+			type="tns:SalexPortType">
+		<soap12bind:binding style="document"
+				transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="TestConnection">
+			<soap12bind:operation style="document"
+					soapAction="Salex#Salex:TestConnection"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="GetArticles">
+			<soap12bind:operation style="document"
+					soapAction="Salex#Salex:GetArticles"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="GetManufacturingOrders">
+			<soap12bind:operation style="document"
+					soapAction="Salex#Salex:GetManufacturingOrders"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="SetSerializationResult">
+			<soap12bind:operation style="document"
+					soapAction="Salex#Salex:SetSerializationResult"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="Salex">
+		<port name="SalexSoap"
+				binding="tns:SalexSoapBinding">
+			<documentation> 
+				<wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/"
+						conformsTo="http://ws-i.org/profiles/basic/1.1"/>
+			</documentation>
+			<soapbind:address location="http://10.0.11.4/BDUPP/ws/Salex"/>
+		</port>
+		<port name="SalexSoap12"
+				binding="tns:SalexSoap12Binding">
+			<soap12bind:address location="http://10.0.11.4/BDUPP/ws/Salex"/>
+		</port>
+	</service>
+</definitions>
